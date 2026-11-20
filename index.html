@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>TamalGrayos</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      padding: 24px; color: #f9fafb;
+      background: radial-gradient(circle at top, #374151 0, #111827 55%, #030712 100%);
+    }
+    main {
+      width: min(680px, 100%); padding: clamp(28px, 6vw, 56px);
+      border: 1px solid #4b5563; border-radius: 24px;
+      background: #111827dd; box-shadow: 0 24px 80px #0008;
+      text-align: center;
+    }
+    .tag { color: #a7f3d0; font-size: .85rem; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 14px 0; font-size: clamp(2.5rem, 9vw, 4.5rem); line-height: 1; }
+    p { color: #d1d5db; line-height: 1.7; }
+    a {
+      display: inline-block; margin-top: 18px; padding: 12px 20px;
+      border-radius: 999px; background: #34d399; color: #052e2b;
+      font-weight: 700; text-decoration: none;
+    }
+    a:hover { background: #6ee7b7; transform: translateY(-1px); }
+    footer { margin-top: 34px; color: #9ca3af; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="tag">Proyecto en construcción</div>
+    <h1>TamalGrayos</h1>
+    <p>¡Bienvenido! Este es el espacio de TamalGrayos para compartir proyectos, experimentos y cosas hechas con código.</p>
+    <a href="https://github.com/TamalGrayos" target="_blank" rel="noopener noreferrer">Visitar GitHub</a>
+    <footer>Hecho con HTML y CSS · 2026</footer>
+  </main>
+</body>
+</html>
