@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Atrapa los Tamales | TamalGrayos</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#234638,#0b1220 60%);color:#f8fafc;display:grid;place-items:center;padding:18px}
+main{width:min(760px,100%);text-align:center}
+h1{font-size:clamp(2rem,7vw,3.5rem);margin:8px 0}
+p{color:#cbd5e1}
+.hud{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0}
+.pill{background:#172638;border:1px solid #36516a;border-radius:14px;padding:9px 16px;font-weight:700}
+#game{position:relative;width:100%;height:min(62vh,460px);min-height:300px;overflow:hidden;border:2px solid #4b8066;border-radius:22px;background:linear-gradient(#142d2a,#10211f);box-shadow:0 20px 60px #0007;touch-action:pan-y}
+#game:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 34px,#ffffff08 35px 37px);pointer-events:none}
+.tamale{position:absolute;border:0;background:transparent;font-size:38px;line-height:1;cursor:pointer;filter:drop-shadow(0 4px 3px #0008);user-select:none;touch-action:manipulation;animation:drop linear forwards}
+@keyframes drop{from{transform:translateY(-55px) rotate(-12deg)}to{transform:translateY(520px) rotate(18deg)}}
+.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0}
+button,.link{border:0;border-radius:999px;padding:12px 20px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+#start{background:#86efac;color:#052e16}
+#start:disabled{opacity:.55;cursor:default}
+.link{display:inline-block;background:#263449;color:#e2e8f0}
+#message{min-height:28px;color:#bbf7d0;font-weight:700}
+small{color:#94a3b8}
+</style>
+</head>
+<body>
+<main>
+  <p><small>TAMALGRAYOS ARCADE · JUEGO 01</small></p>
+  <h1>🌽 Atrapa los Tamales</h1>
+  <p>¡Atrapa los tamalitos antes de que se escapen! Toca o haz clic en cada uno.</p>
+  <div class="hud">
+    <div class="pill">Puntos: <span id="score">0</span></div>
+    <div class="pill">Tiempo: <span id="time">30</span>s</div>
+    <div class="pill">Récord: <span id="best">0</span></div>
+  </div>
+  <div id="game" aria-label="Zona de juego"></div>
+  <div class="controls"><button id="start">▶ Empezar partida</button><a class="link" href="index.html">← Volver a TamalGrayos</a></div>
+  <div id="message" role="status">Pulsa «Empezar partida» para jugar.</div>
+  <small>Funciona con mouse, pantalla táctil y teclado para activar los botones.</small>
+</main>
+<script>
+const area=document.getElementById('game'),scoreEl=document.getElementById('score'),timeEl=document.getElementById('time'),bestEl=document.getElementById('best'),startBtn=document.getElementById('start'),message=document.getElementById('message');
+let score=0,time=30,running=false,spawnTimer=null,clockTimer=null;
+let best=0;try{best=Number(localStorage.getItem('tamalgrayos-record')||0)}catch(e){}
+bestEl.textContent=best;
+function endGame(){running=false;clearInterval(spawnTimer);clearInterval(clockTimer);startBtn.disabled=false;startBtn.textContent='↻ Jugar otra vez';message.textContent='¡Tiempo! Conseguistes '+score+' puntos. '+(score>best?'¡Nuevo récord! 🏆':'');if(score>best){best=score;bestEl.textContent=best;try{localStorage.setItem('tamalgrayos-record',String(best))}catch(e){}}}
+function spawn(){if(!running)return;const item=document.createElement('button');item.className='tamale';item.type='button';item.textContent=Math.random()<.85?'🫔':'🌽';item.setAttribute('aria-label','Atrapar tamal');const max=Math.max(0,area.clientWidth-48);item.style.left=(Math.random()*max)+'px';item.style.top='-48px';const duration=2.3+Math.random()*1.5;item.style.animationDuration=duration+'s';item.addEventListener('click',()=>{if(!running)return;score++;scoreEl.textContent=score;item.remove()});area.appendChild(item);setTimeout(()=>item.remove(),(duration+0.2)*1000)}
+function start(){if(running)return;score=0;time=30;scoreEl.textContent=score;timeEl.textContent=time;area.replaceChildren();running=true;startBtn.disabled=true;startBtn.textContent='¡A jugar!';message.textContent='¡Dale, atrapa todos los que puedas!';spawn();spawnTimer=setInterval(spawn,720);clockTimer=setInterval(()=>{time--;timeEl.textContent=time;if(time<=0)endGame()},1000)}
+startBtn.addEventListener('click',start);
+</script>
+</body>
+</html>
